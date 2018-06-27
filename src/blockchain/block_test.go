@@ -129,7 +129,6 @@ func TestCountDiff(t *testing.T) {
 	}
 	// use byte repeat....
 	for count, hash := range d {
-		fmt.Printf("COUNT=%d\n", count)
 		if hash.CountDiff() != count {
 			fmt.Printf("wrong count for %d (%d)\n", count, hash.CountDiff())
 			t.Fail()

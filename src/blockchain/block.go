@@ -4,7 +4,6 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
-	"math/big"
 
 	"golang.org/x/crypto/sha3"
 )
@@ -42,14 +41,13 @@ func (h *Hash) Inc() {
 
 // Block in the block chain
 type Block struct {
-	Hash      Hash
-	Index     uint64
-	Timestamp uint64
-	Difficulty uint64
-	CumulativeDifficulty *big.Int
-	PrevHash  Hash
-	Transactions []Tx
-	Nonce     Hash
+	Hash                 Hash
+	Index                uint64
+	Timestamp            uint64
+	Difficulty           uint64
+	PrevHash             Hash
+	Transactions         []Tx
+	Nonce                Hash
 }
 
 // GenerateHash generates the block hash

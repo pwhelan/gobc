@@ -191,16 +191,25 @@ func handleGetDifficulty(w http.ResponseWriter, r *http.Request, _ httprouter.Pa
 
 func handleGetChainStatus(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	block := Blockchain.Get(-1)
+	tdiff, err := Blockchain.GetCumulativeDifficulty(int(block.Index))
+	if err != nil {
+		respondWithJSON(w, r, http.StatusBadRequest, struct{
+			Error string `json:"error"`
+		}{
+			Error: "invaid block",
+		})
+		return
+	}
 	status := struct{
 		Height uint64
 		Difficulty uint64
 		LastBlock *blockchain.Block
-		TotalDifficulty string
+		TotalDifficulty int
 	}{
 		Height: block.Index+1,
 		Difficulty: Blockchain.GetDifficulty(),
 		LastBlock: block,
-		TotalDifficulty: Blockchain.CumulativeDifficulty.String(),
+		TotalDifficulty: tdiff,
 	}
 	respondWithJSON(w, r, http.StatusOK, status)
 }

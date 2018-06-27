@@ -148,7 +148,6 @@ func readData(rw *bufio.ReadWriter) {
 		fmt.Printf("ERROR: %s\n", err.Error())
 	}
 	fmt.Printf("PEER: %s\n", msg.Data.(P2pIdentity).ID)
-
 	for {
 		var fragment blockchain.Fragment
 		if err := decoder.Decode(&fragment); err == nil {
@@ -170,14 +169,7 @@ func writeChain(encoder *json.Encoder, rw *bufio.ReadWriter) error {
 		return nil
 	}
 	fmt.Println("send out blocks...")
-	fragment := blockchain.Fragment{
-		Start: 1,
-		End: last.Index,
-		Blocks: map[uint64]*blockchain.Block{},
-	}
-	for i := fragment.Start; i <= fragment.End; i++{
-		fragment.Blocks[i] = Blockchain.Get(int(i))
-	}
+	fragment := Blockchain.GetFragment(1, last.Index)
 	if err := encoder.Encode(fragment); err != nil {
 		return err
 	}
