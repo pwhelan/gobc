@@ -77,12 +77,12 @@ func (bc *Blockchain) calculateDifficulty() uint64 {
 		fmt.Printf("Calculated!\n")
 	}()
 	last := bc.get(-1)
-	if last == nil {
+	if last == nil || last.Index == 0 {
 		return 0
 	}
 	fmt.Printf("last[%d]=%d\n", last.Index, last.Difficulty)
 	prev := bc.get(int(last.Index - 1))
-	if prev == nil {
+	if prev == nil || prev.Index == last.Index {
 		return 0
 	}
 	blocktime := last.Timestamp - prev.Timestamp
